@@ -201,7 +201,8 @@ import {HTTPRequest} from '../streaming/vo/metrics/HTTPRequest';
  *                rtp: null,
  *                rtpSafetyFactor: 5,
  *                mode: Constants.CMCD_MODE_QUERY
- *            }
+ *            },
+ *            eventDurationNullDefault: 0
  *          },
  *          errors: {
  *            recoverAttempts: {
@@ -924,7 +925,8 @@ function Settings() {
                 rtp: null,
                 rtpSafetyFactor: 5,
                 mode: Constants.CMCD_MODE_QUERY
-            }
+            },
+            eventDurationNullDefault: 0
         },
         errors: {
             recoverAttempts: {

@@ -321,7 +321,8 @@ declare namespace dashjs {
                 rtp?: number,
                 rtpSafetyFactor?: number,
                 mode?: 'query' | 'header'
-            }
+            },
+            eventDurationNullDefault?: number;
         };
         errors?: {
             recoverAttempts?: {

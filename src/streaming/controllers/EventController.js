@@ -297,7 +297,7 @@ function EventController() {
         try {
             const callback = function (event) {
                 if (event !== undefined) {
-                    const duration = !isNaN(event.duration) ? event.duration : 0;
+                    const duration = !isNaN(event.duration) ? event.duration : settings.get().streaming.eventDurationNullDefault || 0;
                     // The event is either about to start or has already been started and we are within its duration
                     if ((event.calculatedPresentationTime <= currentVideoTime && event.calculatedPresentationTime + presentationTimeThreshold + duration >= currentVideoTime)) {
                         _startEvent(event, events, MediaPlayerEvents.EVENT_MODE_ON_START);
