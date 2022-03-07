@@ -1,6 +1,6 @@
 name: "Create Release & Publish Package"
 
-# Trigger on any commit to main
+# Trigger on any commit to main branch
 on:
     push:
         branches: [main]
