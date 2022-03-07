@@ -61,6 +61,13 @@ function KeySystemPlayReady(config) {
             xmlDoc;
         const headers = {};
         const parser = new DOMParser();
+
+        // If message format configured/defaulted to utf-16 AND number of bytes is odd, assume 'unwrapped' raw CDM message.
+        if (messageFormat === 'utf-16' && message.byteLength % 2 === 1) {
+            headers['Content-Type'] = 'text/xml; charset=utf-8';
+            return headers;
+        }
+
         const dataview = (messageFormat === 'utf-16') ? new Uint16Array(message) : new Uint8Array(message);
 
         msg = String.fromCharCode.apply(null, dataview);
@@ -89,6 +96,12 @@ function KeySystemPlayReady(config) {
     function getLicenseRequestFromMessage(message) {
         let licenseRequest = null;
         const parser = new DOMParser();
+
+        // If message format configured/defaulted to utf-16 AND number of bytes is odd, assume 'unwrapped' raw CDM message.
+        if (messageFormat === 'utf-16' && message.byteLength % 2 === 1) {
+            return message;
+        }
+        
         const dataview = (messageFormat === 'utf-16') ? new Uint16Array(message) : new Uint8Array(message);
 
         checkConfig();
