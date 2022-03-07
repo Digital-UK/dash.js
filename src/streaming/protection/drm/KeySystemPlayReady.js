@@ -101,7 +101,7 @@ function KeySystemPlayReady(config) {
         if (messageFormat === 'utf-16' && message.byteLength % 2 === 1) {
             return message;
         }
-        
+
         const dataview = (messageFormat === 'utf-16') ? new Uint16Array(message) : new Uint8Array(message);
 
         checkConfig();

@@ -27,13 +27,7 @@ const configProd = merge(common, {
     },
     performance: { hints: false },
     plugins: [
-        new ESLintPlugin({
-            files: [
-                'src/**/*.js',
-                'test/unit/mocks/*.js',
-                'test/unit/*.js'
-            ]
-        })
+        
     ]
 });
 
