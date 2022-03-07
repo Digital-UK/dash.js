@@ -1,0 +1,67 @@
+name: "Version Bump"
+
+on:
+    workflow_dispatch:
+        inputs:
+            new_version:
+                description: New version number/string to replace what is currently set in package.json
+                required: true
+            source_branch:
+                description: The source branch to create the release branch from
+                required: true
+                default: main
+
+jobs:
+    show_inputs:
+        name: "Show Inputs"
+        runs-on: ubuntu-latest
+        if: github.event_name == 'workflow_dispatch'
+        steps:
+            - name: "Inputs"
+              uses: actions/github-script@v5
+              with:
+                  script: |
+                      console.log(`Workflow from: ${context.payload.ref}`);
+                      console.log('---');
+                      for (const input in context.payload.inputs) {
+                        console.log(`${input}: ${context.payload.inputs[input]}`);
+                      }
+    update_version:
+        name: "Update Version & Create PR"
+        runs-on: ubuntu-latest
+        steps:
+            - name: "Setup - Checkout"
+              uses: actions/checkout@v2.3.4
+              with:
+                  ref: ${{ github.event.inputs.source_branch }}
+
+            - name: "Create Branch"
+              run: |
+                  git checkout -b release/${{github.event.inputs.new_version}}
+                  git push -u origin release/${{github.event.inputs.new_version}}
+            - name: "Update Versions & Commit"
+              env:
+                  NEW_VER: ${{ github.event.inputs.new_version }}
+              run: |
+                  cp package.json package-orig.json
+                  cp package-lock.json package-lock-orig.json
+                  jq ".version = \"$NEW_VER\"" package-orig.json > package.json
+                  jq ".version = \"$NEW_VER\"" package-lock-orig.json > package-lock.json
+                  rm package-orig.json package-lock-orig.json
+                  git config --global user.email "duk.opssupport@digitaluk.co.uk"
+                  git config --global user.name "digitalukops"
+                  git commit -a -m "Release: ${{ github.event.inputs.new_version }} [ci-release]"
+                  git push
+            - name: "Create PR"
+              uses: actions/github-script@v4
+              with:
+                  github-token: ${{ secrets.ORG_GITHUB_ACTIONS_TOKEN }}
+                  script: |
+                      github.pulls.create({
+                        owner: context.repo.owner,
+                        repo: context.repo.repo,
+                        head: "release/${{ github.event.inputs.new_version }}",
+                        base: "${{ github.event.inputs.source_branch }}",
+                        title: "Release: ${{ github.event.inputs.new_version }} [ci-release]",
+                        body: "Releasing version ${{ github.event.inputs.new_version }}. When PR is merged a new release will be created and package published."
+                      })
