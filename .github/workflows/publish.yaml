@@ -102,8 +102,8 @@ jobs:
                   key: ${{ runner.os }}-node-modules-${{ env.CACHE_NAME }}-${{ hashFiles('**/package-lock.json') }}
                   restore-keys: |
                       ${{ runner.os }}-node-modules-${{ env.CACHE_NAME }}-
-            - name: "Install dependencies"
-              id: install_deps
+            - name: "Install packages"
+              id: install_packages
               run: npm install -g webpack webpack-cli
               
             - name: "Install dependencies"
