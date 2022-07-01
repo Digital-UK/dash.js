@@ -107,6 +107,11 @@ declare namespace dashjs {
 
         reset(): void;
     }
+    
+    export interface BaseUrlController {
+        update(manifest: object): void;
+        reset(): void;
+    }
 
     export interface Bitrate {
         id?: string;
@@ -603,6 +608,8 @@ declare namespace dashjs {
         provideThumbnail(time: number, callback: (thumbnail: Thumbnail | null) => void): void;
 
         getDashAdapter(): DashAdapter;
+        
+        getBaseUrlController(): BaseUrlController;
 
         getOfflineController(): OfflineController;
 

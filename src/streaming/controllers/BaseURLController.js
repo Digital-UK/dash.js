@@ -125,7 +125,8 @@ function BaseURLController() {
         reset: reset,
         initialize: initialize,
         resolve: resolve,
-        setConfig: setConfig
+        setConfig: setConfig,
+        update: update,
     };
 
     setup();

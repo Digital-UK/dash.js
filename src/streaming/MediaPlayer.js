@@ -1954,6 +1954,18 @@ function MediaPlayer() {
         return adapter;
     }
 
+    /**
+     * Returns the BaseUrlController.js Module.
+     *
+     * @see {@link module:BaseUrlController}
+     * @returns {Object}
+     * @memberof module:MediaPlayer
+     * @instance
+     */
+    function getBaseUrlController() {
+        return baseURLController;
+    }
+
     //***********************************
     // PRIVATE METHODS
     //***********************************
@@ -2372,6 +2384,7 @@ function MediaPlayer() {
         getCurrentTextTrackIndex,
         provideThumbnail,
         getDashAdapter,
+        getBaseUrlController,
         getOfflineController,
         getSettings,
         updateSettings,
