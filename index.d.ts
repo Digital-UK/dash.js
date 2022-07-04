@@ -111,6 +111,7 @@ declare namespace dashjs {
     export interface BaseUrlController {
         update(manifest: object): void;
         reset(): void;
+        setBlacklistExpiryTime(time: number): void;
     }
 
     export interface Bitrate {
@@ -622,6 +623,8 @@ declare namespace dashjs {
         reset(): void;
 
         destroy(): void;
+
+        setBlacklistExpiryTime(time: number): void;
 
     }
 

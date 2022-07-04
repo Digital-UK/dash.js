@@ -402,6 +402,23 @@ class MediaPlayerEvents extends EventsBase {
          * @event MediaPlayerEvents#ADAPTATION_SET_REMOVED_NO_CAPABILITIES
          */
         this.ADAPTATION_SET_REMOVED_NO_CAPABILITIES = 'adaptationSetRemovedNoCapabilities';
+
+        /**
+         * A service location has been blacklisted.
+         * @event MediaPlayerEvents#SERVICE_LOCATION_BLACKLIST_CHANGED
+         */
+        this.SERVICE_LOCATION_BLACKLIST_CHANGED = 'serviceLocationBlacklistChanged';
+        /**
+         * A service location has been removed from the blacklist and is available for failover again.
+         * @event MediaPlayerEvents#SERVICE_LOCATION_UNBLACKLISTED
+         */
+        this.SERVICE_LOCATION_UNBLACKLISTED = 'serviceLocationUnblacklisted';
+
+        /**
+         * Triggered when a new baseUrl has been selected.
+         * @event MediaPlayerEvents#BASEURL_SELECTED
+         */
+        this.BASEURL_SELECTED = 'baseUrlSelected';
     }
 }
 

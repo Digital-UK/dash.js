@@ -1942,6 +1942,10 @@ function MediaPlayer() {
         return streamInfo ? streamController.getStreamById(streamInfo.id) : null;
     }
 
+    function setBlacklistExpiryTime(time) {
+        streamController.setBlacklistExpiryTime(time);
+    }
+
     /**
      * Returns the DashAdapter.js Module.
      *
@@ -2382,6 +2386,7 @@ function MediaPlayer() {
         resetCustomInitialTrackSelectionFunction,
         attachTTMLRenderingDiv,
         getCurrentTextTrackIndex,
+        setBlacklistExpiryTime,
         provideThumbnail,
         getDashAdapter,
         getBaseUrlController,

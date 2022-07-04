@@ -1534,6 +1534,10 @@ function StreamController() {
         }
     }
 
+    function setBlacklistExpiryTime(time) {
+        baseURLController.setBlacklistExpiryTime(time);
+    }
+
     function getStreams() {
         return streams;
     }
@@ -1557,6 +1561,7 @@ function StreamController() {
         getHasMediaOrInitialisationError,
         getStreams,
         getActiveStream,
+        setBlacklistExpiryTime,
         getInitialPlayback,
         getAutoPlay,
         reset
