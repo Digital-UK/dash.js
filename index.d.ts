@@ -106,6 +106,11 @@ declare namespace dashjs {
         reset(): void;
     }
 
+    export interface BaseUrlController {
+        update(manifest: object): void;
+        reset(): void;
+    }
+
     export interface Bitrate {
         id?: string;
         width?: number;
@@ -608,6 +613,8 @@ declare namespace dashjs {
         getDashAdapter(): DashAdapter;
 
         getOfflineController(): OfflineController;
+
+        getBaseUrlController(): BaseUrlController;
 
         triggerSteeringRequest(): Promise<any>;
 

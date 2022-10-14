@@ -407,6 +407,12 @@ class MediaPlayerEvents extends EventsBase {
          * @event MediaPlayerEvents#CONTENT_STEERING_REQUEST_COMPLETED
          */
         this.CONTENT_STEERING_REQUEST_COMPLETED = 'contentSteeringRequestCompleted';
+
+        /**
+         * Triggered when a new baseUrl has been selected.
+         * @event MediaPlayerEvents#BASEURL_SELECTED
+         */
+        this.BASEURL_SELECTED = 'baseUrlSelected';
     }
 }
 

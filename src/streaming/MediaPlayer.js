@@ -1231,6 +1231,26 @@ function MediaPlayer() {
     /*
     ---------------------------------------------------------------------------
 
+        BASE URL
+
+    ---------------------------------------------------------------------------
+    */
+
+    /**
+     * Returns the BaseUrlController.js Module.
+     *
+     * @see {@link module:BaseUrlController}
+     * @returns {Object}
+     * @memberof module:MediaPlayer
+     * @instance
+     */
+    function getBaseUrlController() {
+        return baseURLController;
+    }
+
+    /*
+    ---------------------------------------------------------------------------
+
         METRICS
 
     ---------------------------------------------------------------------------
@@ -2445,6 +2465,7 @@ function MediaPlayer() {
         provideThumbnail,
         getDashAdapter,
         getOfflineController,
+        getBaseUrlController,
         triggerSteeringRequest,
         getCurrentSteeringResponseData,
         getSettings,
