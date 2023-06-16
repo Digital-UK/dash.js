@@ -1522,6 +1522,18 @@ function StreamController() {
         }
     }
 
+    function setLicenseExpiry(msec) {
+        if (protectionController) {
+            protectionController.setLicenseExpiry(msec);
+        }
+    }
+
+    function clearLicenseExpiry() {
+        if (protectionController) {
+            protectionController.clearLicenseExpiry();
+        }
+    }
+
     function resetInitialSettings() {
         streams = [];
         providedStartTime = NaN;
@@ -1623,7 +1635,9 @@ function StreamController() {
         getActiveStream,
         getInitialPlayback,
         getAutoPlay,
-        reset
+        reset,
+        setLicenseExpiry,
+        clearLicenseExpiry
     };
 
     setup();

@@ -40,6 +40,7 @@ import {HTTPRequest} from '../../vo/metrics/HTTPRequest';
 import Utils from '../../../core/Utils';
 import Constants from '../../constants/Constants';
 import FactoryMaker from '../../../core/FactoryMaker';
+import KeyMessage from "../vo/KeyMessage";
 
 const NEEDKEY_BEFORE_INITIALIZE_RETRIES = 5;
 const NEEDKEY_BEFORE_INITIALIZE_TIMEOUT = 500;
@@ -88,7 +89,10 @@ function ProtectionController(config) {
         selectedKeySystem,
         keySystemSelectionInProgress,
         licenseXhrRequest,
-        licenseRequestRetryTimeout;
+        licenseRequestRetryTimeout,
+        licenseExpiryTimeout,
+        receivedKeyMessage,
+        receivedKeySystemInfo;
 
     function setup() {
         logger = debug.getLogger(instance);
@@ -98,6 +102,9 @@ function ProtectionController(config) {
         robustnessLevel = '';
         licenseXhrRequest = null;
         licenseRequestRetryTimeout = null;
+        licenseExpiryTimeout = null;
+        receivedKeyMessage = null;
+        receivedKeySystemInfo = null;
         eventBus.on(events.INTERNAL_KEY_MESSAGE, _onKeyMessage, instance);
         eventBus.on(events.INTERNAL_KEY_STATUS_CHANGED, _onKeyStatusChanged, instance);
     }
@@ -342,6 +349,7 @@ function ProtectionController(config) {
 
             try {
                 keySystemInfo.initData = initDataForKS;
+                receivedKeySystemInfo = keySystemInfo;
                 protectionModel.createKeySession(keySystemInfo);
             } catch (error) {
                 eventBus.trigger(events.KEY_SESSION_CREATED, {
@@ -350,6 +358,7 @@ function ProtectionController(config) {
                 });
             }
         } else if (keySystemInfo && keySystemInfo.initData) {
+            receivedKeySystemInfo = keySystemInfo;
             protectionModel.createKeySession(keySystemInfo);
         } else {
             eventBus.trigger(events.KEY_SESSION_CREATED, {
@@ -666,6 +675,7 @@ function ProtectionController(config) {
 
         // Dispatch event to applications indicating we received a key message
         const keyMessage = e.data;
+        receivedKeyMessage = keyMessage;
         eventBus.trigger(events.KEY_MESSAGE, { data: keyMessage });
         const messageType = (keyMessage.messageType) ? keyMessage.messageType : 'license-request';
         const message = keyMessage.message;
@@ -720,7 +730,9 @@ function ProtectionController(config) {
      * @private
      */
     function _issueLicenseRequest(keyMessage, licenseServerData, protData) {
-        const sessionToken = keyMessage.sessionToken;
+        console.debug('MyKeyMessage', keyMessage);
+
+        let sessionToken = keyMessage.sessionToken;
         const messageType = (keyMessage.messageType) ? keyMessage.messageType : 'license-request';
         const eventData = { sessionToken: sessionToken, messageType: messageType };
         const keySystemString = selectedKeySystem ? selectedKeySystem.systemString : null;
@@ -792,11 +804,16 @@ function ProtectionController(config) {
         };
 
         const reqPayload = selectedKeySystem.getLicenseRequestFromMessage(message);
+        console.debug('My req payload', reqPayload);
         const reqMethod = licenseServerData.getHTTPMethod(messageType);
         const responseType = licenseServerData.getResponseType(keySystemString, messageType);
         const timeout = protData && !isNaN(protData.httpTimeout) ? protData.httpTimeout : LICENSE_SERVER_REQUEST_DEFAULT_TIMEOUT;
-        const sessionId = sessionToken.getSessionId() || null;
 
+        console.debug('MyST', sessionToken, keyMessage);
+
+        const sessionId = ('getSessionId' in sessionToken) ? sessionToken.getSessionId() : keyMessage.message.sessionToken.getSessionId() || null;
+
+        console.debug('My SessionId', sessionId);
         let licenseRequest = new LicenseRequest(url, reqMethod, responseType, reqHeaders, withCredentials, messageType, sessionId, reqPayload);
         const retryAttempts = !isNaN(settings.get().streaming.retryAttempts[HTTPRequest.LICENSE]) ? settings.get().streaming.retryAttempts[HTTPRequest.LICENSE] : LICENSE_SERVER_REQUEST_RETRIES;
         const licenseRequestFilters = customParametersModel.getLicenseRequestFilters();
@@ -1109,6 +1126,37 @@ function ProtectionController(config) {
         }
     }
 
+    /**
+     * Sets license expiry time and triggers a new license request. Overwrites any previously set value.
+     * @param {number} msec
+     */
+    function setLicenseExpiry(msec) {
+
+        if(!isNaN(licenseExpiryTimeout)) {
+            clearLicenseExpiry();
+        }
+
+        licenseExpiryTimeout = setTimeout(() => {
+            if (!receivedKeySystemInfo) {
+                console.warn(`${ProtectionErrors.LICENSE_EXPIRY_KEY_MESSAGE_NOT_INITIALISED} skipping license-renewal key message triggers`);
+                return;
+            }
+            console.debug(`Trigger license renewal key system info `, receivedKeySystemInfo);
+            protectionModel.createKeySession(receivedKeySystemInfo);
+        }, msec);
+    }
+
+    /**
+     * Clears an existing license expiry
+     */
+    function clearLicenseExpiry() {
+        if(!isNaN(licenseExpiryTimeout)) {
+            clearTimeout(licenseExpiryTimeout)
+        }
+    }
+
+
+
     instance = {
         initializeForMedia,
         clearMediaInfoArray,
@@ -1126,7 +1174,9 @@ function ProtectionController(config) {
         getKeySystems,
         setKeySystems,
         stop,
-        reset
+        reset,
+        setLicenseExpiry,
+        clearLicenseExpiry
     };
 
     setup();

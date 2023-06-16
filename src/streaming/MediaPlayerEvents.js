@@ -438,6 +438,17 @@ class MediaPlayerEvents extends EventsBase {
          * @event MediaPlayerEvents#INBAND_PRFT
          */
         this.INBAND_PRFT = 'inbandPrft';
+
+        this.KEY_SESSION_CREATED = 'public_keySessionCreated';
+
+        this.KEY_SESSION_CLOSED = 'public_keySessionClosed';
+
+        this.LICENSE_REQUEST_COMPLETE = 'public_licenseRequestComplete';
+
+        this.KEY_ERROR = 'public_keyError';
+
+        this.KEY_STATUSES_CHANGED = 'public_keyStatusesChanged';
+
     }
 }
 
