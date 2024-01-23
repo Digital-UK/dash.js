@@ -418,6 +418,18 @@
                     "Video",
                     "Audio"
                 ]
+            },
+            {
+                "title": "DRM License Renewal example",
+                "description": "This example shows how to set a timer to renew the DRM license",
+                "href": "drm/license-renewal.html",
+                "image": "lib/img/tos-1.jpg",
+                "labels": [
+                    "DRM",
+                    "Playready",
+                    "Video",
+                    "Audio"
+                ]
             }
         ]
     },

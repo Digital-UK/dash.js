@@ -1419,6 +1419,10 @@ declare namespace dashjs {
         reset(): void;
 
         destroy(): void;
+        
+        setLicenseExpiry(msec: number): void;
+
+        clearLicenseExpiry(): void;
 
     }
 
@@ -2827,6 +2831,10 @@ declare namespace dashjs {
         stop(): void;
 
         reset(): void;
+        
+        setLicenseExpiry(msec: number): void;
+
+        clearLicenseExpiry(): void;
     }
 
     export interface ProtectionKeyController {
@@ -2982,6 +2990,7 @@ declare namespace dashjs {
         KEY_SYSTEM_ACCESS_DENIED_ERROR_MESSAGE: 'DRM: KeySystem Access Denied! -- ';
         KEY_SESSION_CREATED_ERROR_MESSAGE: 'DRM: unable to create session! --';
         MEDIA_KEY_MESSAGE_LICENSER_ERROR_MESSAGE: 'DRM: licenser error! --';
+        LICENSE_EXPIRY_KEY_MESSAGE_NOT_INITIALISED: 'DRM: License expiry key message not initialized --';
     }
 
     /**

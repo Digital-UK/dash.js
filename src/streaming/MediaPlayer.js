@@ -1761,6 +1761,33 @@ function MediaPlayer() {
         }
     }
 
+    /**
+     * Creates a timer to fetch a new license
+     * @see {@link ProtectionController#setLicenseExpiry}
+     * @param {number} msec - number of milliseconds from now until the license expires and refreshed
+     * @memberof module:MediaPlayer
+     * @instance
+     */
+    function setLicenseExpiry(msec) {
+        // Propagate changes in case StreamController is already created
+        if (streamController) {
+            streamController.setLicenseExpiry(msec);
+        }
+    }
+
+    /**
+     * Cancels a previously created timer to fetch a new license
+     * @see {@link ProtectionController#clearLicenseExpiry}
+     * @memberof module:MediaPlayer
+     * @instance
+     */
+    function clearLicenseExpiry() {
+        // Propagate changes in case StreamController is already created
+        if (streamController) {
+            streamController.clearLicenseExpiry();
+        }
+    }
+
     /*
     ---------------------------------------------------------------------------
 
@@ -2440,6 +2467,8 @@ function MediaPlayer() {
         }
     }
 
+
+
     instance = {
         initialize,
         setConfig,
@@ -2518,6 +2547,8 @@ function MediaPlayer() {
         getProtectionController,
         attachProtectionController,
         setProtectionData,
+        setLicenseExpiry,
+        clearLicenseExpiry,
         registerLicenseRequestFilter,
         registerLicenseResponseFilter,
         unregisterLicenseRequestFilter,

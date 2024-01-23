@@ -113,6 +113,7 @@ class ProtectionErrors extends ErrorsBase {
         this.KEY_SYSTEM_ACCESS_DENIED_ERROR_MESSAGE = 'DRM: KeySystem Access Denied! -- ';
         this.KEY_SESSION_CREATED_ERROR_MESSAGE = 'DRM: unable to create session! --';
         this.MEDIA_KEY_MESSAGE_LICENSER_ERROR_MESSAGE = 'DRM: licenser error! --';
+        this.LICENSE_EXPIRY_KEY_MESSAGE_NOT_INITIALISED = 'DRM: License expiry key message not initialized --'
     }
 }
 
